@@ -23,6 +23,10 @@ public class Leg implements Serializable {
     private LocalTime legEndTime;          //arrival at next stop (LegEndTime)
     private int legEndTick;
     private String vehicle;
+
+    //Name of the Transit Line (for example the type is Rail and Name is "S7"
+    private String lineName;
+
     private long stopCounter;
 
     private List<Stop> stops;
@@ -33,7 +37,7 @@ public class Leg implements Serializable {
     }
 
     public Leg(Location startLocation, Location endLocation, LocalTime legStartTime, LocalTime legEndTime,
-               String legType, int legId, int legStartTick, int legEndTick, String vehicle) {
+               String legType, int legId, int legStartTick, int legEndTick, String vehicle, String lineName) {
         this.legId = legId;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
@@ -43,6 +47,7 @@ public class Leg implements Serializable {
         this.legEndTick = legEndTick;
         this.legType = legType;
         this.vehicle = vehicle;         //vehicle is implemented so that if shows the transit line and possibly the vehicle type
+        this.lineName = lineName;
         this.stopCounter = 0;
 
         //Only creates a list of stops, if the type of the leg is an public transit (pt) leg
@@ -146,6 +151,14 @@ public class Leg implements Serializable {
 
     public void setLegEndTick(int legEndTick) {
         this.legEndTick = legEndTick;
+    }
+
+    public void setLineName(String lineName){
+        this.lineName = lineName;
+    }
+
+    public String getLineName(){
+        return lineName;
     }
 
     /*

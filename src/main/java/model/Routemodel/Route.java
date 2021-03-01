@@ -55,9 +55,9 @@ public class Route implements Serializable {
      * @param arrivalTime   time at which the last stop of the leg is reached (time at which the leg ends)
      * @param legType       type of the leg which defines its functions and information (atm. only "pt" and "walk")
      */
-    public void addLeg(Location start, Location end, LocalTime departureTime, LocalTime arrivalTime, String legType, int departureTick, int arrivalTick, String vehicle) {
+    public void addLeg(Location start, Location end, LocalTime departureTime, LocalTime arrivalTime, String legType, int departureTick, int arrivalTick, String vehicle, String lineName) {
         legCounter++;                                       //if a leg ist added the counter goes up by one to receive a unique leg id
-        legs.add(new Leg(start, end, departureTime, arrivalTime, legType, legCounter, departureTick, arrivalTick, vehicle));
+        legs.add(new Leg(start, end, departureTime, arrivalTime, legType, legCounter, departureTick, arrivalTick, vehicle, lineName));
     }
 
     /**
