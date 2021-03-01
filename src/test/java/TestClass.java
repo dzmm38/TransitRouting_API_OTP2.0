@@ -1,7 +1,4 @@
-import model.Routemodel.Actions;
-import model.Routemodel.Location;
-import model.Routemodel.Plan;
-import model.Routemodel.Route;
+import model.Routemodel.*;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 import service.OTPFacade;
@@ -113,6 +110,20 @@ public class TestClass {
             System.out.println("Kosten der Route " + route.getCost());
             System.out.println("Anzahl Stops:    " + route.getStopCounter());
             System.out.println("-------------------------------------------------------------------------------------");
+        }
+        int routecounter = 1;
+
+        //To test the lineName addition
+        for (Route route : routes) {
+            System.out.println("Route " + routecounter);
+            for (Leg leg : route.getLegs()) {
+                System.out.println("-------------------------------------------------------------------------------------");
+                System.out.println("lineType: " + leg.getLegType());
+                System.out.println("Vehichle: " + leg.getVehicle());
+                System.out.println("lineName: " + leg.getLineName());
+                System.out.println("-------------------------------------------------------------------------------------");
+            }
+            routecounter++;
         }
     }
 
