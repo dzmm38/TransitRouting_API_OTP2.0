@@ -133,13 +133,14 @@ public class OTPResponseHandler {
             if (leg.getTransitLeg()) {
                 legType = "pt";
                 String vehicle = leg.getMode();
+                String lineName = leg.getRoute();       //Name of the Connection Line for example "S7" -- only if the leg is an transit leg
 
-                model.Routemodel.Leg routeLeg = new model.Routemodel.Leg(start, end, startTime, endTime, legType, 0, startTick, endTick, vehicle);
+                model.Routemodel.Leg routeLeg = new model.Routemodel.Leg(start, end, startTime, endTime, legType, 0, startTick, endTick, vehicle,lineName);
                 buildStops(leg, routeLeg);
                 ConnectionPlan.getRoutes().get(routeCounter).addLeg(routeLeg);
             } else {
                 legType = leg.getMode();
-                ConnectionPlan.getRoutes().get(routeCounter).addLeg(start, end, startTime, endTime, legType, startTick, endTick, "FOOT");
+                ConnectionPlan.getRoutes().get(routeCounter).addLeg(start, end, startTime, endTime, legType, startTick, endTick, "FOOT",""); //lineName empty because it´s an Walk Leg so no Transit is used
             }
         }
     }
