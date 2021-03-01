@@ -82,6 +82,7 @@ public class OTPResponseHandler {
         for (Itinerary itinerary : OtpPojoRoute.getPlan().getItineraries()) {
             long duration = calculator.Sec_To_Min(itinerary.getDuration());
             LocalTime arrivalTime = LocalDateTime.ofEpochSecond(((long) itinerary.getEndTime() / 1000), 0, offset).toLocalTime(); //the time which is given by the itinerary is given in milliseconds, divide with 1000 to get seconds
+            arrivalTime = calculator.roundToMinute(arrivalTime);        //Round Up the Time to a full Minute    (further explanation look at line 179-184 and later)
             double walkDistance = Math.round(itinerary.getWalkDistance());
             int transfers = itinerary.getTransfers();
 
@@ -114,7 +115,10 @@ public class OTPResponseHandler {
             Last its needed to get the LocalTime from the LocalDateTime and set it as either start / end / departure or arrival time.
              */
             LocalTime startTime = LocalDateTime.ofEpochSecond(((long) leg.getStartTime()) / 1000, 0, offset).toLocalTime();
+            startTime = calculator.roundToMinute(startTime);    //Round Up the Time to a full Minute    (further explanation look at line 179-184 and later)
             LocalTime endTime = LocalDateTime.ofEpochSecond(((long) leg.getEndTime()) / 1000, 0, offset).toLocalTime();
+            endTime = calculator.roundToMinute(endTime);        //Round Up the Time to a full Minute    (further explanation look at line 179-184 and later)
+
             int startTick = calculator.calculateSimulationTick(startTime);
             int endTick = calculator.calculateSimulationTick(endTime);
 
@@ -167,13 +171,23 @@ public class OTPResponseHandler {
         int departureTick;
         int arrivalTick;
 
+        //First the first stop of an leg is added -- to do so the stop is given by the fromStop of the Leg
         stopName = ptLeg.getFrom().getName();
         stopId = ptLeg.getFrom().getStopId();
         location = new Location(ptLeg.getFrom().getLat(), ptLeg.getFrom().getLon());
 
+        /*
+        Setting the departure an arrival time and tick
+        For the Time setting first the it´s needed to get the LocalDateTime from EpochSeconds because the time is only given in this format, then from LocalDateTime the
+        toLocalTime Method is used to get the LocalTime
+        From there on the roundToMinute Methode from the TimeController is used to cut the seconds of the given Time
+         */
         departureTime = LocalDateTime.ofEpochSecond(((long) ptLeg.getFrom().getDeparture()) / 1000, 0, offset).toLocalTime();
+        departureTime = calculator.roundToMinute(departureTime);
         arrivalTime = LocalDateTime.ofEpochSecond(((long) ptLeg.getFrom().getArrival()) / 1000, 0, offset).toLocalTime();
+        arrivalTime = calculator.roundToMinute(arrivalTime);
 
+        //To get the Ticks of the departure and arrival Time the calculateSimulationTick Method from the TimeController is used
         departureTick = calculator.calculateSimulationTick(departureTime);
         arrivalTick = calculator.calculateSimulationTick(arrivalTime);
 
@@ -181,14 +195,24 @@ public class OTPResponseHandler {
         ConnectionPlan.getRoutes().get(routeCounter).addStop(location, stopName, stopId, departureTime, arrivalTime, departureTick, arrivalTick);
         stopCounter++;
 
+        // Second the stops between the origin and destination stops are added and created
         for (IntermediateStop intermediateStop : ptLeg.getIntermediateStops()) {
             stopName = intermediateStop.getName();
             stopId = intermediateStop.getStopId();
             location = new Location(intermediateStop.getLat(), intermediateStop.getLon());
 
+            /*
+            Setting the departure an arrival time and tick
+            For the Time setting first the it´s needed to get the LocalDateTime from EpochSeconds because the time is only given in this format, then from LocalDateTime the
+            toLocalTime Method is used to get the LocalTime
+            From there on the roundToMinute Methode from the TimeController is used to cut the seconds of the given Time
+             */
             departureTime = LocalDateTime.ofEpochSecond(((long) intermediateStop.getDeparture()) / 1000, 0, offset).toLocalTime();
+            departureTime = calculator.roundToMinute(departureTime);
             arrivalTime = LocalDateTime.ofEpochSecond(((long) intermediateStop.getArrival()) / 1000, 0, offset).toLocalTime();
+            arrivalTime = calculator.roundToMinute(arrivalTime);
 
+            //To get the Ticks of the departure and arrival Time the calculateSimulationTick Method from the TimeController is used
             departureTick = calculator.calculateSimulationTick(departureTime);
             arrivalTick = calculator.calculateSimulationTick(arrivalTime);
 
@@ -197,13 +221,23 @@ public class OTPResponseHandler {
             stopCounter++;
         }
 
+        //Now the last stop of the Route is added -- to do so the stop is given by the toStop of the leg
         stopName = ptLeg.getTo().getName();
         stopId = ptLeg.getTo().getStopId();
         location = new Location(ptLeg.getTo().getLat(), ptLeg.getTo().getLon());
 
+        /*
+        Setting the departure an arrival time and tick
+        For the Time setting first the it´s needed to get the LocalDateTime from EpochSeconds because the time is only given in this format, then from LocalDateTime the
+        toLocalTime Method is used to get the LocalTime
+        From there on the roundToMinute Methode from the TimeController is used to cut the seconds of the given Time
+         */
         departureTime = LocalDateTime.ofEpochSecond(((long) ptLeg.getTo().getDeparture()) / 1000, 0, offset).toLocalTime();
+        departureTime = calculator.roundToMinute(departureTime);
         arrivalTime = LocalDateTime.ofEpochSecond(((long) ptLeg.getTo().getArrival()) / 1000, 0, offset).toLocalTime();
+        arrivalTime = calculator.roundToMinute(arrivalTime);
 
+        //To get the Ticks of the departure and arrival Time the calculateSimulationTick Method from the TimeController is used
         departureTick = calculator.calculateSimulationTick(departureTime);
         arrivalTick = calculator.calculateSimulationTick(arrivalTime);
 
