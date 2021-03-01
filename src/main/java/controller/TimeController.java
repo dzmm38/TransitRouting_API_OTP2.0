@@ -204,6 +204,22 @@ public class TimeController {
         return tickAfterStart(convertTimeToTick(LocalTime.parse(time)));
     }
 
+    /**
+     * Method to round Times up to full minutes.
+     * Even if its just one second
+     * <p>
+     * For Example if the given time is 15:30:20 then the returning time is 15:31
+     *
+     * @param time the LocalTime which needs to be rounded Up
+     * @return rounded up LocalTime to full minute
+     */
+    public LocalTime roundToMinute(LocalTime time){
+        if (time.getSecond() != 0){
+            time = time.minusSeconds(time.getSecond());
+            time = time.plusMinutes(1);
+        }
+        return time;
+    }
 
     //--------------------------------------- Getter & Setter ---------------------------------------//
     public int getTickZero_Tick() {
