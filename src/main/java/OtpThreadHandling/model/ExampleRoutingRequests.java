@@ -40,13 +40,21 @@ public class ExampleRoutingRequests {
         RoutingRequest r1 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
         System.out.println("Test Request 1 created");
 
-        //------------------- Creating the Routing Request 2 (Lang / Berliner Ort nach Berlin Mitte ------------------//
-        from = new Location(52.639556,13.494802);                                 //Buch (Berliner Ort)
-        to = new Location(52.516423,13.378749);                                   //Brandenburger Tor (Sehenswürdigkeit)
+        //------------------- Alternative Creating the Routing Request 2 (VON: Berlin Südkreuz / NACH: Denkmal) ------------------//
+        from = new Location(52.475446,13.365343);                                 //Berlin Südkreuz
+        to = new Location(52.514127,13.379614);                                   //Denkmal
         queryTime = LocalDateTime.of(2020,8,6,8,0);     //8:00
-        routingName = "VON: Buch (Berliner Ort) / NACH: Brandenburger Tor (Sehenswürdigkeit)";
+        routingName = "VON: Berlin Südkreuz / NACH: Denkmal";
         RoutingRequest r2 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
         System.out.println("Test Request 2 created");
+
+//        //------------------- Creating the Routing Request 2 (Lang / Berliner Ort nach Berlin Mitte ------------------//
+//        from = new Location(52.639556,13.494802);                                 //Buch (Berliner Ort)
+//        to = new Location(52.516423,13.378749);                                   //Brandenburger Tor (Sehenswürdigkeit)
+//        queryTime = LocalDateTime.of(2020,8,6,8,0);     //8:00
+//        routingName = "VON: Buch (Berliner Ort) / NACH: Brandenburger Tor (Sehenswürdigkeit)";
+//        RoutingRequest r2 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
+//        System.out.println("Test Request 2 created");
 
         //-------------- Creating the Routing Request 3 (Realtiv kurz / Berliner Ort zu nahem anderem) ---------------//
         from = new Location(52.547906,13.193984);                                 //Neustadt (Berliner Ort) - Penny
@@ -80,11 +88,19 @@ public class ExampleRoutingRequests {
         RoutingRequest r6 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
         System.out.println("Test Request 6 created");
 
-        //----------------------- Creating the Routing Request 7 (Kurz / Ziemlich direkter Weg) ----------------------//
-        from = new Location(52.405735,13.140910);                                 //Hotel Forsthaus (Rande von Berlin / Wannesee)
-        to = new Location(52.516423,13.378749);                                   //Brandenburger Tor (Sehenswürdigkeit)
+//        //----------------------- Creating the Routing Request 7 (Kurz / Ziemlich direkter Weg) ----------------------//
+//        from = new Location(52.405735,13.140910);                                 //Hotel Forsthaus (Rande von Berlin / Wannesee)
+//        to = new Location(52.516423,13.378749);                                   //Brandenburger Tor (Sehenswürdigkeit)
+//        queryTime = LocalDateTime.of(2020,8,6,15,48);   //15:48
+//        routingName = "VON: Hotel Forsthaus (Rande von Berlin / Wannesee) / NACH: Brandenburger Tor (Sehenswürdigkeit)";
+//        RoutingRequest r7 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
+//        System.out.println("Test Request 7 created");
+
+        //----------------------- Alternative Creating the Routing Request 7 (VON: Berlin Mahlsdorf / NACH: Bezirk Hellersdorf) ----------------------//
+        from = new Location(52.512281,13.611387);                                 //Berlin Mahlsdorf
+        to = new Location(52.525540,13.535886);                                   //Bezirk Hellersdorf
         queryTime = LocalDateTime.of(2020,8,6,15,48);   //15:48
-        routingName = "VON: Hotel Forsthaus (Rande von Berlin / Wannesee) / NACH: Brandenburger Tor (Sehenswürdigkeit)";
+        routingName = "VON: Berlin Mahlsdorf / NACH: Bezirk Hellersdorf";
         RoutingRequest r7 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
         System.out.println("Test Request 7 created");
 
@@ -96,13 +112,22 @@ public class ExampleRoutingRequests {
         RoutingRequest r8 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
         System.out.println("Test Request 8 created");
 
-        //------------------ Creating the Routing Request 9 (Mittel Miite nach etwas weiter außen) -------------------//
-        from = new Location(52.512236,13.467226);                                 //Wohnort nahe Berlin Mitte
-        to = new Location(52.428394,13.440891);                                   //Wohnort Bezirk Neukölln
+//        //------------------ Creating the Routing Request 9 (Mittel Miite nach etwas weiter außen) -------------------//
+//        from = new Location(52.512236,13.467226);                                 //Wohnort nahe Berlin Mitte
+//        to = new Location(52.428394,13.440891);                                   //Wohnort Bezirk Neukölln
+//        queryTime = LocalDateTime.of(2020,8,6,13,45);   //13:45
+//        routingName = "VON: Wohnort nahe Berlin Mitte / NACH: Wohnort Bezirk Neukölln";
+//        RoutingRequest r9 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
+//        System.out.println("Test Request 9 created");
+
+        //------------------ Alternative Creating the Routing Request 9 (Schönleinstr. Berlin (U-Bahn) /Burger King Mitte Berlin) -------------------//
+        from = new Location(52.493042,13.422109);                                 //Schönleinstr. Berlin (U-Bahn)
+        to = new Location(52.520193,13.387457);                                   //Burger King Mitte Berlin
         queryTime = LocalDateTime.of(2020,8,6,13,45);   //13:45
-        routingName = "VON: Wohnort nahe Berlin Mitte / NACH: Wohnort Bezirk Neukölln";
+        routingName = "VON: Schönleinstr. Berlin (U-Bahn) / NACH: Burger King Mitte Berlin";
         RoutingRequest r9 = new RoutingRequest(from,to,queryTime,actions,routingName,routeAmount);
         System.out.println("Test Request 9 created");
+
 
         //-------------- Creating the Routing Request 10 (Mittlere Strecke / relativ mittig in Berlin) ---------------//
         from = new Location(52.516423,13.378749);                                 //Brandenburger Tor (Sehenswürdigkeit)
