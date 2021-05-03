@@ -28,8 +28,14 @@ public class RoutingThread implements Runnable {
     //----------------------------------------- Constructor -----------------------------------------//
     public RoutingThread(int threadNumber, ArrayList<RoutingRequest> testRequestList, int threadSelectionNr,OTPFacade otpFacade){
         testRequest = testRequestList.get(threadSelectionNr);   //sets the request from the testRequestList with the threadSelectionNr (Random form 1 to 10)
-//        this.otpFacade = otpFacade;
-        this.otpFacade = new OTPFacade("Europe/Berlin",2020,8,6,7,0); //TODO: ist es vllt. möglich eine erstellt Facade class zu kopieren und so nicht immer neu erstellen zu müssen
+
+        try {
+            this.otpFacade = (OTPFacade) otpFacade.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+//        this.otpFacade = new OTPFacade("Europe/Berlin",2020,8,6,7,0); //TODO: ist es vllt. möglich eine erstellt Facade class zu kopieren und so nicht immer neu erstellen zu müssen
         this.routingName = testRequest.getRoutingName();
         this.threadNumber = threadNumber;
 
