@@ -86,7 +86,7 @@ public class RoutingClientHandler {
                 otpResponseHandler = new OTPResponseHandler(rootPlan, zoneId, dateTime);
                 Plan ConnectionPlan;
                 ConnectionPlan = otpResponseHandler.build();
-                writingPlanToJson(ConnectionPlan);
+                //writingPlanToJson(ConnectionPlan);
                 break;
 
             default:
@@ -112,8 +112,9 @@ public class RoutingClientHandler {
         JSONObject jsonRequest;
         String RoutingRequest = requestBuilder.buildRequestString(routingRequest);      //creating the Request URL
 
-        System.out.println("Sending Request to OTPServer");
-        System.out.println("Request: " + RoutingRequest);
+        //Disabled for cleaner Console if tested with many Requests at once
+        //System.out.println("Sending Request to OTPServer");
+        //System.out.println("Request: " + RoutingRequest);
 
         Invocation.Builder request;
         request = client.target(OTPConnection + ActionPath_Plan + RoutingRequest)       //creating the actual server Request
@@ -150,7 +151,7 @@ public class RoutingClientHandler {
         extraFileName = extraFileName + map.get("fromPlace") + "_" +
                 map.get("toPlace");
 
-        System.out.println("Create and Saves " + extraFileName + ".json");
+        //System.out.println("Create and Saves " + extraFileName + ".json");
 
 
         ObjectMapper om = new ObjectMapper(new JsonFactory());
@@ -175,7 +176,7 @@ public class RoutingClientHandler {
         extraFileName = extraFileName + ConnectionPlan.getRequestParameters().getFromPlace() + "_" +     //to get the lat and lon and add it to the file name to have better understanding of the Request
                 ConnectionPlan.getRequestParameters().getToPlace();
 
-        System.out.println("Creates and saves " + extraFileName + ".json ..........");
+        //System.out.println("Creates and saves " + extraFileName + ".json ..........");
 
         ObjectMapper om = new ObjectMapper(new JsonFactory());
         om.enable(SerializationFeature.INDENT_OUTPUT);

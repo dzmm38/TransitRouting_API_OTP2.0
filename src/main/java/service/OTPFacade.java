@@ -52,6 +52,15 @@ public class OTPFacade {
         new TimeController().calculateTickZero(dateTime.toLocalTime());
     }
 
+    //Cloning Constructor
+    public OTPFacade(OTPFacade otpFacade){
+        this.zoneId = ZoneId.of(otpFacade.zoneId.toString());
+        this.dateTime = LocalDateTime.of(otpFacade.dateTime.getYear(),otpFacade.dateTime.getMonthValue(),otpFacade.dateTime.getDayOfMonth(),
+                                         otpFacade.dateTime.getHour(),otpFacade.dateTime.getMinute());
+        this.routingClientHandler = new RoutingClientHandler(this.zoneId,this.dateTime.getYear(),this.dateTime.getMonthValue(),this.dateTime.getDayOfMonth(),
+                                                             this.dateTime.getHour(),this.dateTime.getMinute());
+    }
+
     //------------------------------------------- Methods -------------------------------------------//
 
     /**
@@ -165,8 +174,26 @@ public class OTPFacade {
         JSONObject jsonObject = loader.loadJsonObjectRouteFile(fileName);
         return jsonObject;
     }
+
     //--------------------------------------- Getter & Setter ---------------------------------------//
+    public ZoneId getZoneId() {
+        return zoneId;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public RoutingClientHandler getRoutingClientHandler() {
+        return routingClientHandler;
+    }
+
     //----------------------------------------- Additional ------------------------------------------//
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        //return super.clone();
+        return new OTPFacade(this);
+    }
 }
 
 //------------------------------------------ Variable -------------------------------------------//
