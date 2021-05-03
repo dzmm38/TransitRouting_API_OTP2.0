@@ -45,11 +45,11 @@ public class RoutingThread implements Runnable {
     @Override
     public void run() {
         //For Logging, creates a ThreadLog Object to later comprehend times etc.
-        LocalTime startTime = LocalTime.now();
-        ThreadLog threadLog = new ThreadLog(startTime,threadNumber,routingName);
+//        LocalTime startTime = LocalTime.now();
+//        ThreadLog threadLog = new ThreadLog(startTime,threadNumber,routingName);
 
         //Printing a message to the console with the time the Thread is starting + it´s number and description Name
-        System.out.println(startTime + " ---- " + "Starting Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
+//        System.out.println(startTime + " ---- " + "Starting Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
 
         //Taking the testRequest and forming all necessary parts for an OTP request
         Location from = testRequest.getFrom();
@@ -63,12 +63,12 @@ public class RoutingThread implements Runnable {
 
         //For Logging, creates a ThreadLog Object to later comprehend times etc.
         LocalTime endTime = LocalTime.now();
-        threadLog.setThreadEnd(endTime);
+//        threadLog.setThreadEnd(endTime);
 
         //Printing a message to the console with the time the Thread is stopped + it´s number and description
         System.out.println(LocalTime.now() + " ---- " + "Stopping Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
 
-        ThreadLogHandler.addLog(threadLog);
+//        ThreadLogHandler.addLog(threadLog);
     }
 
     //--------------------------------------- Getter & Setter ---------------------------------------//
