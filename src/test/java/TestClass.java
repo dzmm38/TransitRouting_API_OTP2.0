@@ -1,5 +1,5 @@
-import controller.JsonRequestHandler;
-import model.JsonRequest;
+//import controller.JsonRequestHandler;
+//import model.JsonRequest;
 import model.Routemodel.*;
 import org.json.simple.JSONObject;
 import org.junit.Test;
@@ -34,8 +34,8 @@ public class TestClass {
     @Test
     public void createGraph() {
         String OsmFileName = "berlin-latest.osm.pbf";
-        String GtfsFileName = "gtfs_withFares.zip";
-        String dataFolderName = "2";    //the Name of the Folder under src/main/resources/var/otp/graphs/ where the osm/gtfs Files are
+        String GtfsFileName = "gtfs.zip";
+        String dataFolderName = "1";    //the Name of the Folder under src/main/resources/var/otp/graphs/ where the osm/gtfs Files are
         OTPFacade.buildGraph(OsmFileName, GtfsFileName, dataFolderName);
     }
 
@@ -97,10 +97,14 @@ public class TestClass {
     }
 
     @Test
-    public void loadRoute() {
-        String FileName = "Route_52.518112,13.44189_52.514518,13.350306.json";
-        Plan plan = OTPFacade.loadRoute(FileName);
+    public void testload(){
+        loadRoute("Route_52.429779,13.447502_52.516423,13.378749.json");
+    }
 
+    public void loadRoute(String name) {
+        String FileName = name;
+        Plan plan = OTPFacade.loadRoute(FileName);
+        System.out.println("Next Route");
         ArrayList<Route> routes = plan.getRoutes();
 
         for (Route route : routes) {
@@ -115,18 +119,18 @@ public class TestClass {
         }
         int routecounter = 1;
 
-        //To test the lineName addition
-        for (Route route : routes) {
-            System.out.println("Route " + routecounter);
-            for (Leg leg : route.getLegs()) {
-                System.out.println("-------------------------------------------------------------------------------------");
-                System.out.println("lineType: " + leg.getLegType());
-                System.out.println("Vehichle: " + leg.getVehicle());
-                System.out.println("lineName: " + leg.getLineName());
-                System.out.println("-------------------------------------------------------------------------------------");
-            }
-            routecounter++;
-        }
+//        //To test the lineName addition
+//        for (Route route : routes) {
+//            System.out.println("Route " + routecounter);
+//            for (Leg leg : route.getLegs()) {
+//                System.out.println("-------------------------------------------------------------------------------------");
+//                System.out.println("lineType: " + leg.getLegType());
+//                System.out.println("Vehichle: " + leg.getVehicle());
+//                System.out.println("lineName: " + leg.getLineName());
+//                System.out.println("-------------------------------------------------------------------------------------");
+//            }
+//            routecounter++;
+//        }
     }
 
     /*
