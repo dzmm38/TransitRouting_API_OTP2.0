@@ -1,7 +1,5 @@
 package OtpThreadHandling;
 
-import OtpThreadHandling.Logging.ThreadLog;
-import OtpThreadHandling.Logging.ThreadLogHandler;
 import OtpThreadHandling.model.RoutingRequest;
 import model.Routemodel.Actions;
 import model.Routemodel.Location;
@@ -35,7 +33,6 @@ public class RoutingThread implements Runnable {
             e.printStackTrace();
         }
 
-//        this.otpFacade = new OTPFacade("Europe/Berlin",2020,8,6,7,0); //TODO: ist es vllt. möglich eine erstellt Facade class zu kopieren und so nicht immer neu erstellen zu müssen
         this.routingName = testRequest.getRoutingName();
         this.threadNumber = threadNumber;
 
@@ -50,11 +47,8 @@ public class RoutingThread implements Runnable {
      */
     @Override
     public void run() {
-        //For Logging, creates a ThreadLog Object to later comprehend times etc.
-//        LocalTime startTime = LocalTime.now();
-//        ThreadLog threadLog = new ThreadLog(startTime,threadNumber,routingName);
-
         //Printing a message to the console with the time the Thread is starting + it´s number and description Name
+//        LocalTime startTime = LocalTime.now();
 //        System.out.println(startTime + " ---- " + "Starting Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
 
         //Taking the testRequest and forming all necessary parts for an OTP request
@@ -67,14 +61,9 @@ public class RoutingThread implements Runnable {
         //Sending the Request to OTP for routing
         otpFacade.createSimpleRoute(from, to, queryTime, routeAmount, actions);
 
-        //For Logging, creates a ThreadLog Object to later comprehend times etc.
-        LocalTime endTime = LocalTime.now();
-//        threadLog.setThreadEnd(endTime);
-
         //Printing a message to the console with the time the Thread is stopped + it´s number and description
+        LocalTime endTime = LocalTime.now();
         System.out.println(LocalTime.now() + " ---- " + "Stopping Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
-
-//        ThreadLogHandler.addLog(threadLog);
     }
 
     //--------------------------------------- Getter & Setter ---------------------------------------//
