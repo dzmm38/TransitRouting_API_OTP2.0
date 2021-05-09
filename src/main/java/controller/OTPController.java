@@ -67,7 +67,7 @@ public class OTPController {
      *                      Found under: resources/var/otp/graphs/
      */
     public static void loadGraph(String GraphFolderNr) {
-        String[] loadGraph = {"--load", "src\\main\\resources\\Graphs\\" + GraphFolderNr};       //TODO HERE
+        String[] loadGraph = {"--load", "src\\main\\resources\\Graphs\\" + GraphFolderNr, "--port","8086" ,"--securePort", "8087"};       //TODO HERE
 
         System.out.println("Graph aus dem Ordner " + GraphFolderNr + " wird auf den Server geladen.....");
 

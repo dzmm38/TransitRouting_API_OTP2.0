@@ -29,7 +29,7 @@ import java.util.Map;
 public class RoutingClientHandler {
 
     //------------------------------------------- Variable -------------------------------------------//
-    private static final String OTPConnection = "http://localhost:8080/";      //the URL / URI to the OTP Server
+    private static final String OTPConnection = "http://localhost:8086/";      //the URL / URI to the OTP Server
     private static final String ActionPath_Plan = "otp/routers/default/plan";   //the part of the URL at wich the plan Action of OTP is Located
     private Client client;                  //the actual REST Client to handle the request sending for the OTP Server
     private JSONObject jsonObject;          //JsonObject which is given by the OTP response after an request
