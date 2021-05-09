@@ -20,23 +20,13 @@ public class RoutingThread implements Runnable {
     private OTPFacade otpFacade;            //A copy of the PT_Facade_Class for the Routing Method which can called by this thread [OTP only]
 
     private int threadNumber;               //The number of the Thread which is created
-    private String routingName;             //The name describing the Routing request of this thread
-    public Thread thread;
 
     //----------------------------------------- Constructor -----------------------------------------//
-    public RoutingThread(int threadNumber, ArrayList<RoutingRequest> testRequestList, int threadSelectionNr,OTPFacade otpFacade){
-        testRequest = testRequestList.get(threadSelectionNr);   //sets the request from the testRequestList with the threadSelectionNr (Random form 1 to 10)
+    public RoutingThread(int threadNumber,RoutingRequest testRequest,OTPFacade otpFacade){
+        this.testRequest = testRequest;   //sets the request from the testRequestList with the threadSelectionNr (Random form 1 to 10)
+        this.otpFacade = new OTPFacade(otpFacade);
 
-        try {
-            this.otpFacade = (OTPFacade) otpFacade.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        this.routingName = testRequest.getRoutingName();
         this.threadNumber = threadNumber;
-
-        this.thread = new Thread(this, routingName);    //creates the thread with this class and the routingName
     }
 
     //------------------------------------------- Methods -------------------------------------------//
@@ -48,8 +38,8 @@ public class RoutingThread implements Runnable {
     @Override
     public void run() {
         //Printing a message to the console with the time the Thread is starting + it´s number and description Name
-//        LocalTime startTime = LocalTime.now();
-//        System.out.println(startTime + " ---- " + "Starting Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
+//        LocalTime starttime = LocalTime.now();
+//        System.out.println(starttime + " ---- " + "Starting Thread Nr. " + threadNumber + "  -----  " + "Name: " + testRequest.getRoutingName());
 
         //Taking the testRequest and forming all necessary parts for an OTP request
         Location from = testRequest.getFrom();
@@ -62,8 +52,7 @@ public class RoutingThread implements Runnable {
         otpFacade.createSimpleRoute(from, to, queryTime, routeAmount, actions);
 
         //Printing a message to the console with the time the Thread is stopped + it´s number and description
-        LocalTime endTime = LocalTime.now();
-        System.out.println(LocalTime.now() + " ---- " + "Stopping Thread Nr. " + threadNumber + "  -----  " + "Name: " + routingName);
+        System.out.println(LocalTime.now() + " ---- " + "Stopping Thread Nr. " + threadNumber + "  -----  " + "Name: " + testRequest.getRoutingName());
     }
 
     //--------------------------------------- Getter & Setter ---------------------------------------//
@@ -72,7 +61,7 @@ public class RoutingThread implements Runnable {
     }
 
     public String getRoutingName() {
-        return routingName;
+        return testRequest.getRoutingName();
     }
 }
 

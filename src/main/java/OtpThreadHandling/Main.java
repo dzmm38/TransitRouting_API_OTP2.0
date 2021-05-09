@@ -4,6 +4,8 @@ import OtpThreadHandling.model.ExampleRoutingRequests;
 import OtpThreadHandling.model.RoutingRequest;;
 import service.OTPFacade;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -16,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Main {
     //------------------------------------------ Settings -------------------------------------------//
-    int AmountOfThreads = 500;           //TODO: Dann testen mit 100/1tsd/10tsd/etc.
-    int ThreadPool = 100;                //Wenn der Thread Pool = Anzahl der Threads dann werden alle gleichzeitig bearbeitet
+    int AmountOfThreads = 50;           //TODO: Dann testen mit 100/1tsd/10tsd/etc.
+    int ThreadPool = 50;                //Wenn der Thread Pool = Anzahl der Threads dann werden alle gleichzeitig bearbeitet
 
     String ZoneId = "Europe/Berlin";
     int simulationYear = 2020;
@@ -29,6 +31,10 @@ public class Main {
     //------------------------------------------ Variable -------------------------------------------//
     public ArrayList<RoutingRequest> testingRequests;   //List of all Requests created for testing --- in ExampleRoutingRequests.class
     public OTPFacade facade_class;                      //the PT_Facade_Class used to set the ones in the Threads / which then is used for Routing Methods  [OTP only]
+
+    public LocalTime startTime;
+    public LocalTime prepEnd;
+    public LocalTime routingEnd;
 
     /**
      * Method to start the Benchmarking / Testing
@@ -45,8 +51,12 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
 
+        main.startTime = LocalTime.now();   //Timestamp --> for programm starting time
+
         main.testingRequests = new ExampleRoutingRequests().getTestRequest();   //creates the testingRequests and sets them
         main.OTPHandling(); //creates an initialises a OTPFacade.class //without starting a server [OTP only]
+
+        main.prepEnd = LocalTime.now();     //Timestamp --> for preparation (graph loading / test route creating) end
 
         main.createAndStartTest();    //Test Methode wurde als vorschlag betrachtet wird aber nicht verwendet während der Tests
     }
@@ -73,15 +83,9 @@ public class Main {
         for(int i = 0; i<AmountOfThreads; i++) {
             routeChoice = rand.nextInt(10);
 
-            int finalI = i;
-            executorService.execute(new RoutingThread(i+1,testingRequests,routeChoice,facade_class));
+            executorService.execute(new RoutingThread(i+1,new RoutingRequest(testingRequests.get(routeChoice)),facade_class));
             pickedRouteList.add(routeChoice++);
 
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         executorService.shutdown();
@@ -90,8 +94,10 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        routingEnd = LocalTime.now();           //Timestamp --> for the end of the Routing
 
         checkHowOftenWhichRoute2(pickedRouteList);
+        getTimes();
     }
 
     /*
@@ -140,6 +146,36 @@ public class Main {
         System.out.println("Routing Request 10 picked: " + route10 +" times");
         System.out.println("Errors occurred: " + error + " times");
         System.out.println("------------------------------------------------");
+    }
+
+    public void getTimes(){
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Preparation time --> Loading a graph and creating the test routes");
+        System.out.println("Routing time --> The time which the Programm needs to finish all thread requests");
+        System.out.println("Completion time --> The time the programm runs for this test");
+        System.out.println();
+        System.out.println("Times Format is:  Minutes : Seconds . Milliseconds");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------");
+        printTime("Preparation time: ",Duration.between(startTime,prepEnd));
+        printTime("Routing time:     ",Duration.between(prepEnd,routingEnd));
+        printTime("Completion time:  ",Duration.between(startTime, LocalTime.now()));
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println(LocalTime.now());
+    }
+
+    public void printTime(String Time, Duration duration){
+        Double seconds = ((double)duration.toMillis())/1000;
+
+        int min;
+        int sec;
+        int milli;
+
+        milli = (int) ((seconds * 1000) % 1000);
+        min = (int)(seconds/60);
+        sec = (seconds.intValue()) - (min*60);
+
+        System.out.println(Time + min + ":" + sec + "." + milli);
     }
 }
 //--------------------------------------- Getter & Setter ---------------------------------------//
