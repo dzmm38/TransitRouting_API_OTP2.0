@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Main {
     //------------------------------------------ Settings -------------------------------------------//
-    int AmountOfThreads = 50;           //TODO: Dann testen mit 100/1tsd/10tsd/etc.
-    int ThreadPool = 50;                //Wenn der Thread Pool = Anzahl der Threads dann werden alle gleichzeitig bearbeitet
+    int AmountOfThreads = 1000;           //TODO: Dann testen mit 100/1tsd/10tsd/etc.
+    int ThreadPool = 1000;                //Wenn der Thread Pool = Anzahl der Threads dann werden alle gleichzeitig bearbeitet
 
     String ZoneId = "Europe/Berlin";
     int simulationYear = 2020;
@@ -31,9 +31,12 @@ public class Main {
     //------------------------------------------ Variable -------------------------------------------//
     public ArrayList<RoutingRequest> testingRequests;   //List of all Requests created for testing --- in ExampleRoutingRequests.class
     public OTPFacade facade_class;                      //the PT_Facade_Class used to set the ones in the Threads / which then is used for Routing Methods  [OTP only]
+    public ArrayList<RoutingThread> threadlist;         //List containing all Threads
+    public ArrayList<Integer> pickedRouteList;          //List containing the choosen Amount of the TestRequests
 
     public LocalTime startTime;
     public LocalTime prepEnd;
+    public LocalTime routingStart;
     public LocalTime routingEnd;
 
     /**
@@ -55,8 +58,17 @@ public class Main {
 
         main.testingRequests = new ExampleRoutingRequests().getTestRequest();   //creates the testingRequests and sets them
         main.OTPHandling(); //creates an initialises a OTPFacade.class //without starting a server [OTP only]
+        main.createThreads();
 
         main.prepEnd = LocalTime.now();     //Timestamp --> for preparation (graph loading / test route creating) end
+
+        try {
+            System.out.println("Starting The Routing test.....");
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        main.routingStart = LocalTime.now();    //Timestamp --> for Routing Start
 
         main.createAndStartTest();    //Test Methode wurde als vorschlag betrachtet wird aber nicht verwendet während der Tests
     }
@@ -74,23 +86,15 @@ public class Main {
     Creates then Start the Threads nearly simultaneously
      */
     public void createAndStartTest(){
-        ArrayList pickedRouteList = new ArrayList();
-        int routeChoice;
-
-        Random rand = new Random();
         ExecutorService executorService = Executors.newFixedThreadPool(ThreadPool);
-
         for(int i = 0; i<AmountOfThreads; i++) {
-            routeChoice = rand.nextInt(10);
-
-            executorService.execute(new RoutingThread(i+1,new RoutingRequest(testingRequests.get(routeChoice)),facade_class));
-            pickedRouteList.add(routeChoice++);
-
+            executorService.execute(threadlist.get(i));
         }
 
+        //Preparing the Showdown of the ExecutorService
         executorService.shutdown();
         try {
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);     //The Shutdown after Finishing all Requests
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -98,6 +102,23 @@ public class Main {
 
         checkHowOftenWhichRoute2(pickedRouteList);
         getTimes();
+    }
+
+    public void createThreads(){
+        threadlist = new ArrayList<RoutingThread>();
+        pickedRouteList = new ArrayList();
+        Random rand = new Random();
+        int routeChoice;
+
+        System.out.println("Creating all Threads");
+        for (int i=0;i<AmountOfThreads;i++){
+            routeChoice = rand.nextInt(10);
+            threadlist.add(new RoutingThread(i+1,new RoutingRequest(testingRequests.get(routeChoice)),facade_class));
+            pickedRouteList.add(routeChoice++);
+        }
+        System.out.println(threadlist.size() + " Threads with Requests created");
+
+        checkHowOftenWhichRoute2(pickedRouteList);
     }
 
     /*
@@ -158,7 +179,7 @@ public class Main {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("--------------------------------------------------------------------------------");
         printTime("Preparation time: ",Duration.between(startTime,prepEnd));
-        printTime("Routing time:     ",Duration.between(prepEnd,routingEnd));
+        printTime("Routing time:     ",Duration.between(routingStart,routingEnd));
         printTime("Completion time:  ",Duration.between(startTime, LocalTime.now()));
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println(LocalTime.now());
