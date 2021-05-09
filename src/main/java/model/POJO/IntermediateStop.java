@@ -19,6 +19,7 @@ public class IntermediateStop {
     private int stopSequence;
     private String vertexType;
     private String boardAlightType;
+    private String zoneId;
 
     //----------------------------------------- Constructor -----------------------------------------//
     public IntermediateStop() {
@@ -125,5 +126,15 @@ public class IntermediateStop {
     public void setBoardAlightType(String boardAlightType) {
         this.boardAlightType = boardAlightType;
     }
+
+    @JsonProperty("zoneId")
+    public String getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(String zoneId) {
+        this.zoneId = zoneId;
+    }
+
     //----------------------------------------- Additional ------------------------------------------//
 }

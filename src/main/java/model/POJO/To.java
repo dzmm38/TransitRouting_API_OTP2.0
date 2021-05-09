@@ -20,6 +20,7 @@ public class To {
     private int stopSequence;
     private String boardAlightType;
     private String stopId;
+    private String ZoneId;
 
     //----------------------------------------- Constructor -----------------------------------------//
     public To() {
@@ -135,5 +136,15 @@ public class To {
     public void setStopId(String stopId) {
         this.stopId = stopId;
     }
+
+    @JsonProperty("zoneId")
+    public String getZoneId() {
+        return ZoneId;
+    }
+
+    public void setZoneId(String zoneId) {
+        ZoneId = zoneId;
+    }
+
     //----------------------------------------- Additional ------------------------------------------//
 }
