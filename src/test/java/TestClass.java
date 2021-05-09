@@ -99,6 +99,15 @@ public class TestClass {
     @Test
     public void testload(){
         loadRoute("Route_52.429779,13.447502_52.516423,13.378749.json");
+        loadRoute("Route_52.434861,13.260825_52.480684,13.263863.json");
+        loadRoute("Route_52.440791,13.444667_52.437963,13.346589.json");
+        loadRoute("Route_52.475446,13.365343_52.514127,13.379614.json");
+        loadRoute("Route_52.512281,13.611387_52.52554,13.535886.json");
+        loadRoute("Route_52.516423,13.378749_52.517805,13.442522.json");
+        loadRoute("Route_52.516998,13.417763_52.526551,13.37809.json");
+        loadRoute("Route_52.538662,13.409295_52.483604,13.341451.json");
+        loadRoute("Route_52.547906,13.193984_52.529015,13.210079.json");
+        loadRoute("Route_52.596076,13.335111_52.525929,13.367809.json");
     }
 
     public void loadRoute(String name) {

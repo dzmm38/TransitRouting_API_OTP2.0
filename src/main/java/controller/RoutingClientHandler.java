@@ -83,6 +83,21 @@ public class RoutingClientHandler {
                 responseObject = getRoute(routingRequest);
                 responseConverter = new ResponseConverter();
                 rootPlan = responseConverter.JSONObjectToPojo(responseObject);
+
+                if (0 == rootPlan.getPlan().getItineraries().size()) {
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println(rootPlan.getRequestParameters().getToPlace().toString());
+                    System.out.println(rootPlan.getRequestParameters().getFromPlace().toString());
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                    System.out.println("------------------------------------");
+                }
                 otpResponseHandler = new OTPResponseHandler(rootPlan, zoneId, dateTime);
                 Plan ConnectionPlan;
                 ConnectionPlan = otpResponseHandler.build();
