@@ -18,5 +18,4 @@ public class Test {
         LocalDateTime queryTime = LocalDateTime.of(2021, 4, 30, 10, 0);
         otp.createSimpleRoute(from, to, queryTime,1, Actions.JSONOBEJCT_AS_JSON);
     }
-#
 }
