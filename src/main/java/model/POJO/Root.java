@@ -10,7 +10,7 @@ public class Root {
     //------------------------------------------ Variable -------------------------------------------//
     private DebugOutput debugOutput;                //Changed for OTP2 Version
     private RequestParameters requestParameters;
-    private Plan plan;
+    public Plan plan;
     private ElevationMetadata elevationMetadata;
 
     //Added for OTP2 Version

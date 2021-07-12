@@ -77,9 +77,9 @@ public class OTPResponseHandler {
      */
     private void buildRoute() {
         offset = zoneId.getRules().getOffset(startTime);        //sets the offset of the given zone
-
         //for every itinerary of the OpenTripPlanner response create a route
-        for (Itinerary itinerary : OtpPojoRoute.getPlan().getItineraries()) {
+        try {
+            for (Itinerary itinerary : OtpPojoRoute.getPlan().getItineraries()) {
             long duration = calculator.Sec_To_Min(itinerary.getDuration());
             LocalTime arrivalTime = LocalDateTime.ofEpochSecond(((long) itinerary.getEndTime() / 1000), 0, offset).toLocalTime(); //the time which is given by the itinerary is given in milliseconds, divide with 1000 to get seconds
             arrivalTime = calculator.roundToMinute(arrivalTime);        //Round Up the Time to a full Minute    (further explanation look at line 179-184 and later)
@@ -92,6 +92,15 @@ public class OTPResponseHandler {
             routeCounter++;
 
             buildLegs(itinerary);   //builds the legs for the given itinerary
+        }
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
+            System.out.println("-------------------------------------------------------");
+            System.out.println("Datum: " + OtpPojoRoute.getRequestParameters().getDate());
+            System.out.println("Anfragezeit: " + OtpPojoRoute.getRequestParameters().getTime());
+            System.out.println("GPS Daten --> FROM: " + OtpPojoRoute.getRequestParameters().getFromPlace());
+            System.out.println("GPS Daten --> TO: " + OtpPojoRoute.getRequestParameters().getToPlace());
+            System.out.println("-------------------------------------------------------");
         }
     }
 

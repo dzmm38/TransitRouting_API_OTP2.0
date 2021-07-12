@@ -29,7 +29,7 @@ import java.util.Map;
 public class RoutingClientHandler {
 
     //------------------------------------------- Variable -------------------------------------------//
-    private static final String OTPConnection = "http://localhost:8086/";      //the URL / URI to the OTP Server
+    private static final String OTPConnection = "http://localhost:8087/";      //the URL / URI to the OTP Server
     private static final String ActionPath_Plan = "otp/routers/default/plan";   //the part of the URL at wich the plan Action of OTP is Located
     private Client client;                  //the actual REST Client to handle the request sending for the OTP Server
     private JSONObject jsonObject;          //JsonObject which is given by the OTP response after an request
@@ -82,22 +82,11 @@ public class RoutingClientHandler {
             case ROUTEMODEL_AS_JSON:
                 responseObject = getRoute(routingRequest);
                 responseConverter = new ResponseConverter();
-                rootPlan = responseConverter.JSONObjectToPojo(responseObject);
-
-                if (0 == rootPlan.getPlan().getItineraries().size()) {
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println(rootPlan.getRequestParameters().getToPlace().toString());
-                    System.out.println(rootPlan.getRequestParameters().getFromPlace().toString());
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
-                    System.out.println("------------------------------------");
+                if (responseObject == null){
+                    System.out.println("EROOOOOOOORRRR");
+                    break;
                 }
+                rootPlan = responseConverter.JSONObjectToPojo(responseObject);
                 otpResponseHandler = new OTPResponseHandler(rootPlan, zoneId, dateTime);
                 Plan ConnectionPlan;
                 ConnectionPlan = otpResponseHandler.build();

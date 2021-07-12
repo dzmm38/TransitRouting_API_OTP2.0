@@ -189,11 +189,6 @@ public class OTPFacade {
     }
 
     //----------------------------------------- Additional ------------------------------------------//
-    @Override
-    public Object clone() throws CloneNotSupportedException{
-        //return super.clone();
-        return new OTPFacade(this);
-    }
 }
 
 //------------------------------------------ Variable -------------------------------------------//

@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadTesting_Main {
     //------------------------------------------ Settings -------------------------------------------//
-    int AmountOfThreads = 500;           //TODO: Dann testen mit 100/1tsd/10tsd/etc.
-    int ThreadPool = 500;                //Wenn der Thread Pool = Anzahl der Threads dann werden alle gleichzeitig bearbeitet
+    int AmountOfThreads = 500000;           //TODO: Dann testen mit 100/1tsd/10tsd/etc.
+    int ThreadPool = 500000;                //Wenn der Thread Pool = Anzahl der Threads dann werden alle gleichzeitig bearbeitet
 
     String ZoneId = "Europe/Berlin";
     int simulationYear = 2020;
@@ -68,7 +68,8 @@ public class ThreadTesting_Main {
         }
         threadTestingMain.routingStart = LocalTime.now();    //Timestamp --> for Routing Start
 
-        threadTestingMain.createAndStartTest();    //Test Methode wurde als vorschlag betrachtet wird aber nicht verwendet während der Tests
+        //threadTestingMain.createAndStartTest();    //Test Methode wurde als vorschlag betrachtet wird aber nicht verwendet während der Tests
+        threadTestingMain.createAndStartTestWithoutService();
     }
 
     //----------------------------------------- Constructor -----------------------------------------//
@@ -84,6 +85,9 @@ public class ThreadTesting_Main {
     Creates then Start the Threads nearly simultaneously
      */
     public void createAndStartTest(){
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        System.out.println("Thread = Max Prio");
+        System.out.println(Thread.currentThread().getPriority());
         pickedRouteList = new ArrayList();           // list of Integers representing the picked Example Route
         Random rand = new Random();
         int routeChoice;                     // number of the example Request
@@ -95,7 +99,9 @@ public class ThreadTesting_Main {
             executorService.execute(new RoutingThread(i+1,new RoutingRequest(testingRequests.get(routeChoice)),facade_class));
             pickedRouteList.add(routeChoice++);
         }
+        System.out.println("All Threads Created");
 
+        //Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
         //Preparing the Shutdown of the ExecutorService
         executorService.shutdown();
         try {
@@ -170,7 +176,8 @@ public class ThreadTesting_Main {
         printTime("Routing time:     ",Duration.between(routingStart,routingEnd));
         printTime("Completion time:  ",Duration.between(startTime, LocalTime.now()));
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.println(LocalTime.now());
+        System.out.println("StartTime: " + startTime);
+        System.out.println("EndTime: " + LocalTime.now());
     }
 
     public void printTime(String Time, Duration duration){
@@ -186,6 +193,42 @@ public class ThreadTesting_Main {
 
         System.out.println(Time + min + ":" + sec + "." + milli);
     }
-}
+
 //--------------------------------------- Getter & Setter ---------------------------------------//
 //----------------------------------------- Additional ------------------------------------------//
+public void createAndStartTestWithoutService(){
+
+        int count = Thread.activeCount();
+        System.out.println(Thread.activeCount());
+
+    Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+    System.out.println("Thread = Max Prio");
+    System.out.println(Thread.currentThread().getPriority());
+    pickedRouteList = new ArrayList();           // list of Integers representing the picked Example Route
+    Random rand = new Random();
+    int routeChoice;                     // number of the example Request
+
+    System.out.println("Creating all Threads");
+    for(int i = 0; i<AmountOfThreads; i++) {
+        routeChoice = rand.nextInt(10);
+        new RoutingThread2(i+1, new RoutingRequest(testingRequests.get(routeChoice)),facade_class).start();
+        pickedRouteList.add(routeChoice++);
+    }
+    System.out.println("All Threads Created");
+
+    //Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+    //Preparing the Shutdown of the ExecutorService
+    while (Thread.activeCount() != count){
+        try {
+            System.out.println("Noch aktive Threads:" + Thread.activeCount());
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    routingEnd = LocalTime.now();           //Timestamp --> for the end of the Routing
+
+    checkHowOftenWhichRoute2(pickedRouteList);      //for analysing
+    getTimes();                                     //for analysing
+}
+}
